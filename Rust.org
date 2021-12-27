@@ -12,6 +12,10 @@
 - [[#control-flow][Control Flow]]
   - [[#if-else-if-else][if, else if, else]]
   - [[#loops][Loops]]
+- [[#ownership][Ownership]]
+  - [[#stack-and-heap][Stack and Heap]]
+  - [[#ownership-rules][Ownership rules]]
+  - [[#copy-move-and-clone][Copy, Move and Clone]]
 
 * Variables
 ** Immutability
@@ -146,4 +150,51 @@ for element in a.iter() {
 for num in 1..4 {
    println("{}", num);
 }
+#+end_src
+* Ownership
+Ownership model is a way to manage memory.
+| Pros                 | Cons                               |
+|----------------------+------------------------------------|
+| Control over memory  | Slower write time                  |
+| Error free*          | (fighting with the borrow checker) |
+| Faster runtime       |                                    |
+| Smaller program size |                                    |
+** Stack and Heap
+Memory can be stored in one of two places during run time.
+1. Stack
+2. Heap
+[[./Images/Stack and Heap.png]]
+During runtime the program can access both the stack and heap.
+| Stack                                          | Heap                                                                         |
+|------------------------------------------------+------------------------------------------------------------------------------|
+| Stack is fixed sized                           | Heap is unorganized                                                          |
+| has stack frame for every function             | Used for dynamic variables                                                   |
+| stack frame stores the info of local variables | for every variable in heap a pointer to that variable is stored in the stack |
+| Faster                                         | Slower as you have to follow the pointer form the stack                      |
+** Ownership rules
+1. Each value in rust has a variable called its owner.
+2. There can only be one owner at a time.
+3. When the owner goes out of scope the value will be dropped.
+#+begin_src rust
+fn main() {
+    {
+        let s: &str = "hello";// s in scope
+        let s: String = String::from("hello");// s in scope
+    }// s out of scope
+}
+#+end_src
+** Copy, Move and Clone
+*** Copy, Move
+When copying strings the original variable is removed when its values has been copied or it is moved to the new variable.
+#+begin_src rust
+// The string is moved to s2 and s1 is invalidated
+let s1 = String::from("XRhahelry");
+let s2 = s1; // Shallow copy a.k.a move
+println!("{}", s1); // Error: s1 is invalid
+#+end_src
+*** Clone
+Clone is to store the duplicate of the value of one variable in another.
+#+begin_src rust
+let s1 = String::from("XRhahelry");
+let s2 = s1.clone();
 #+end_src
