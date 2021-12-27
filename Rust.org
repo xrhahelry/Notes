@@ -164,6 +164,7 @@ Memory can be stored in one of two places during run time.
 1. Stack
 2. Heap
 [[./Images/Stack and Heap.png]]
+
 During runtime the program can access both the stack and heap.
 | Stack                                          | Heap                                                                         |
 |------------------------------------------------+------------------------------------------------------------------------------|
