@@ -16,6 +16,9 @@
   - [[#stack-and-heap][Stack and Heap]]
   - [[#ownership-rules][Ownership rules]]
   - [[#copy-move-and-clone][Copy, Move and Clone]]
+  - [[#slicing][Slicing]]
+- [[#structs-and-enums][Structs and Enums]]
+  - [[#structs][Structs]]
 
 * Variables
 ** Immutability
@@ -187,6 +190,7 @@ fn main() {
 ** Copy, Move and Clone
 *** Copy, Move
 When copying strings the original variable is removed when its values has been copied or it is moved to the new variable.
+Strings get moved and integers get copied.
 #+begin_src rust
 // The string is moved to s2 and s1 is invalidated
 let s1 = String::from("XRhahelry");
@@ -198,4 +202,53 @@ Clone is to store the duplicate of the value of one variable in another.
 #+begin_src rust
 let s1 = String::from("XRhahelry");
 let s2 = s1.clone();
+#+end_src
+
+** Slicing
+Slicing lets you reference a certain number of elements from a string of characters.
+Slices can be further simplified as we can omit the first and last index of the string if our slice begins from the start or goes up to the end of the string.
+Omitting both the starting and ending index will reference the whole string.
+#+begin_src rust
+fn main() {
+    let mut s = String::from("hello world");
+    //slices of s
+    let hello = &s[0..5];
+    let world  = &s[6..11];
+
+    let word = first_word(&s);
+}
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == ' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..];
+}
+#+end_src
+
+* Structs and Enums
+** Structs
+#+begin_src rust
+struct User {
+    username: String,
+    email: String,
+    sign_count: u64,
+    active: bool,
+}
+
+fn main() {
+    let user1 = User {
+        email: String::from("what@gmail.com"),
+        username: String::from("xrhahelry"),
+        sign_count: 4,
+        active: true,
+    };
+
+    let name = user1.username;
+}
 #+end_src
